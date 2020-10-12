@@ -1,13 +1,19 @@
-import express from "express";
+import express from 'express';
+import { graphqlHTTP } from 'express-graphql';
+import schema from './schema';
 
 const app = express();
 
-app.get("/", (req, res) => {
-    res.send("My first GraphQL!!!");
-})
+app.get('/', (req, res) => {
+    res.send('My first GraphQL!!!');
+});
 
-app.get("/GraphQL", (req, res) => {
-    res.send("My first GraphQL Test!!!");
-})
+const root = { hello: () => "Hi, I am Muthu" };
 
-app.listen(8080, ()=> console.log("Running server on port http://localhost:8080/GraphQL"));
+app.use('/graphql', graphqlHTTP({
+    schema: schema,
+    rootValue: root,
+    graphiql: true,
+}));
+
+app.listen(8081, () => console.log('Running server on port http://localhost:8081/graphql'));
